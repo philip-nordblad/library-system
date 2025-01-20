@@ -2,9 +2,14 @@ from flask import Flask
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
+import secrets
+
+
 
 db = SQLAlchemy()
 migrate = Migrate()
+login_manager = LoginManager()
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -15,8 +20,10 @@ def create_app(test_config=None):
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///library.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+    #Set up with imports
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init(app)
 
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
@@ -33,7 +40,7 @@ def create_app(test_config=None):
 
     # Import and register your blueprints here
     # from . import auth, main
-    # app.register_blueprint(auth.bp)
+    app.register_blueprint(auth.bp)
     # app.register_blueprint(main.bp)
 
     return app

@@ -4,13 +4,24 @@ header %}
 <h1>Register</h1>
 {% endblock %} {% block content %}
 <form method="post">
-  <label for="username">Username</label>
-  <input type="text" name="username" id="username" required />
-  <br />
-  <label for="password">Password</label>
-  <input type="password" name="password" id="password" required />
-  <br />
-  <button type="submit">Register</button>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.username.label }}<br />
+    {{ form.username(size=32) }}
+  </p>
+  <p>
+    {{ form.password.label }}<br />
+    {{ form.password(size=32) }}
+  </p>
+  <p>
+    {{ form.confirm_password.label }}<br />
+    {{ form.confirm_password(size=32) }}
+  </p>
+  <p>
+    {{ form.role.label }}<br />
+    {{ form.role(size=32) }}
+  </p>
+  <p>{{ form.submit() }}</p>
 </form>
 <p>
   Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a>.

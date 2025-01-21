@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -23,7 +23,7 @@ def create_app(test_config=None):
     #Set up with imports
     db.init_app(app)
     migrate.init_app(app, db)
-    login_manager.init(app)
+    login_manager.init_app(app)
 
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
@@ -38,9 +38,13 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+
     # Import and register your blueprints here
-    # from . import auth, main
+    from . import auth
     app.register_blueprint(auth.bp)
     # app.register_blueprint(main.bp)
+    @app.route('/')
+    def index():
+        return render_template('index.html')
 
     return app
